@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Você se importa msm com isso?</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDsSlzV_ZSAFDLtE_w8-j4s6kCIqZOACc",
+      authDomain: "desabafo-b308e.firebaseapp.com",
+      databaseURL: "https://desabafo-b308e-default-rtdb.firebaseio.com",
+      projectId: "desabafo-b308e",
+      storageBucket: "desabafo-b308e.firebasestorage.app",
+      messagingSenderId: "515003263315",
+      appId: "1:515003263315:web:c70a66bba82734f2c2d9a6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const textRef = ref(db, "texto");
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const button = document.getElementById("enterBtn");
+      const display = document.getElementById("display");
+      const editor = document.getElementById("editor");
+      const editBtn = document.getElementById("editBtn");
+      const saveBtn = document.getElementById("saveBtn");
+
+      button.addEventListener("click", async () => {
+        const snapshot = await get(textRef);
+        const content = snapshot.exists() ? snapshot.val() : "(vazio)";
+        display.innerText = content;
+        document.getElementById("main").style.display = "none";
+        document.getElementById("content").style.display = "flex";
+      });
+
+      editBtn.addEventListener("click", async () => {
+        const password = prompt("Digite a senha:");
+        if (password === "sunlight") {
+          const snapshot = await get(textRef);
+          editor.value = snapshot.exists() ? snapshot.val() : "";
+          editor.style.display = "block";
+          saveBtn.style.display = "inline-block";
+        } else {
+          alert("Senha incorreta.");
+        }
+      });
+
+      saveBtn.addEventListener("click", async () => {
+        await set(textRef, editor.value);
+        display.innerText = editor.value;
+        editor.style.display = "none";
+        saveBtn.style.display = "none";
+      });
+    });
+  </script>
+  <style>
+    html, body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #main, #content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    #content {
+      display: none;
+      padding: 20px;
+      gap: 15px;
+    }
+    button {
+      background: #333;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #444;
+    }
+    #editor {
+      width: 75vw;
+      height: 75vh;
+      background: #111;
+      color: #fff;
+      border: 1px solid #555;
+      padding: 15px;
+      display: none;
+      resize: none;
+      font-family: monospace;
+      font-size: 18px;
+      box-sizing: border-box;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-align: left;
+      max-width: 90vw;
+    }
+    #display {
+      font-size: 18px; /* Alterado para 24px */
+    }
+  </style>
+</head>
+<body>
+  <div id="main">
+    <button id="enterBtn">Você se importa msm com isso?</button>
+  </div>
+  <div id="content">
+    <pre id="display"></pre>
+    <button id="editBtn">Editar</button>
+    <textarea id="editor"></textarea>
+    <button id="saveBtn" style="display:none;">Salvar</button>
+  </div>
+</body>
+</html>

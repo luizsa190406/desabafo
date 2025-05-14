@@ -1,0 +1,13 @@
+#editor {
+  width: 75vw;
+  height: 75vh;
+  background: #111;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 15px;
+  display: none;
+  resize: none;
+  font-family: monospace;
+  font-size: 48px; /* Aqui está o tamanho da fonte */
+  box-sizing: border-box;
+}
